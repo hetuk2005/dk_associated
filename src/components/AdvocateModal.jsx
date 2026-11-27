@@ -1,3 +1,4 @@
+import useDialog from '../hooks/useDialog';
 import React from 'react';
 import {
   X,
@@ -12,11 +13,12 @@ import {
 import './Modals.css';
 
 export default function AdvocateModal({ advocate, onClose, onBook }) {
+  const dialogRef = useDialog(Boolean(advocate), onClose);
   if (!advocate) return null;
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-panel" onClick={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-label="Advocate profile" tabIndex={-1} className="modal-panel" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
             <div className="adv-avatar-lg">{advocate.initials}</div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Route, Routes, useLocation } from 'react-router-dom';
+import { BrowserRouter, Link, Route, Routes, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ConsultationModal from './components/ConsultationModal';
@@ -34,8 +34,9 @@ export default function App() {
     <BrowserRouter>
       <ScrollToTop />
       <div style={{ minHeight: '100vh', display: 'flex', flexDirection: 'column' }}>
+        <a className="skip-link" href="#main-content">Skip to content</a>
         <Navbar onOpenBooking={openBooking} />
-        <main style={{ flex: 1 }}>
+        <main id="main-content" tabIndex={-1} style={{ flex: 1 }}>
           <Routes>
             <Route
               path="/"
@@ -64,6 +65,12 @@ export default function App() {
               element={<LegalHubPage onOpenBooking={openBooking} />}
             />
             <Route path="/track-case" element={<TrackCasePage />} />
+            <Route path="*" element={<section className="section container">
+              <span className="eyebrow">404 · Page not found</span>
+              <h1>The page you requested could not be found.</h1>
+              <p>Explore our legal services or return to the home page.</p>
+              <Link className="btn btn-primary" to="/">Return home</Link>
+            </section>} />
           </Routes>
         </main>
         <Footer onOpenBooking={openBooking} />

@@ -134,3 +134,6 @@
     align-items: flex-start;
   }
 }
+
+.footer-disclaimer > svg { flex-shrink: 0; }
+.footer-contact a { overflow-wrap: anywhere; }

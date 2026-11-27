@@ -1,3 +1,4 @@
+import useDialog from '../hooks/useDialog';
 import React, { useState, useEffect } from 'react';
 import {
   X,
@@ -75,6 +76,7 @@ export default function ConsultationModal({ isOpen, onClose, prefill = {} }) {
     }
   }, [isOpen, prefill]);
 
+  const dialogRef = useDialog(isOpen, onClose);
   if (!isOpen) return null;
 
   const updateField = (key, value) => {
@@ -100,11 +102,21 @@ export default function ConsultationModal({ isOpen, onClose, prefill = {} }) {
     }
   };
 
+  const continueToDetails = () => {
+    const today = new Date().toLocaleDateString('en-CA');
+    if (!form.date || form.date < today || !form.timeSlot) {
+      setError('Please choose today or a future date and a time slot.');
+      return;
+    }
+    setError('');
+    setStep(2);
+  };
+
   const slots = prefill.advocate?.slots?.length ? prefill.advocate.slots : TIME_SLOTS;
 
   return (
     <div className="modal-backdrop" onClick={onClose}>
-      <div className="modal-panel" onClick={(e) => e.stopPropagation()}>
+      <div ref={dialogRef} role="dialog" aria-modal="true" aria-label="Legal consultation" tabIndex={-1} className="modal-panel" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div>
             <span className="modal-kicker">Privileged & Confidential Consultation</span>
@@ -146,6 +158,7 @@ export default function ConsultationModal({ isOpen, onClose, prefill = {} }) {
 
           {step === 1 && (
             <div className="modal-step-content">
+              {error && <div className="form-error" role="alert">{error}</div>}
               <div className="form-group">
                 <label className="form-label">Select Consultation Mode</label>
                 <div className="mode-grid">
@@ -212,7 +225,7 @@ export default function ConsultationModal({ isOpen, onClose, prefill = {} }) {
                     type="date"
                     className="form-control"
                     value={form.date}
-                    min={new Date().toISOString().slice(0, 10)}
+                    min={new Date().toLocaleDateString('en-CA')}
                     onChange={(e) => updateField('date', e.target.value)}
                   />
                 </div>
@@ -258,7 +271,7 @@ export default function ConsultationModal({ isOpen, onClose, prefill = {} }) {
                 <button type="button" className="btn btn-outline" onClick={onClose}>
                   Cancel
                 </button>
-                <button type="button" className="btn btn-primary" onClick={() => setStep(2)}>
+                <button type="button" className="btn btn-primary" onClick={continueToDetails}>
                   Continue to Client Details
                 </button>
               </div>

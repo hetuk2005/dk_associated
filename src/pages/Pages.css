@@ -25,7 +25,7 @@
   margin-bottom: 28px;
   box-shadow: var(--shadow-xs);
   display: grid;
-  grid-template-columns: 1.5fr 1fr 1fr 1fr auto;
+  grid-template-columns: minmax(0, 1.5fr) repeat(3, minmax(0, 1fr)) auto;
   gap: 12px;
   align-items: end;
 }
@@ -317,3 +317,10 @@
     width: 100%;
   }
 }
+
+.pkg-card-footer, .pkg-milestone-row { flex-wrap: wrap; gap: 10px; }
+.pkg-milestone-row > :last-child { flex-shrink: 0; }
+.tab-pill { max-width: 100%; overflow-wrap: anywhere; }
+
+.sort-control { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; min-width: 0; max-width: 100%; }
+.sort-control .form-control { max-width: 100%; }

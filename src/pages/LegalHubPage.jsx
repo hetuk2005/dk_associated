@@ -1,3 +1,4 @@
+import useDialog from '../hooks/useDialog';
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import {
@@ -36,6 +37,7 @@ export default function LegalHubPage({ onOpenBooking }) {
   const [guides, setGuides] = useState([]);
   const [guideSearch, setGuideSearch] = useState('');
   const [selectedGuide, setSelectedGuide] = useState(null);
+  const dialogRef = useDialog(Boolean(selectedGuide), () => setSelectedGuide(null));
 
   const [qForm, setQForm] = useState({
     title: '',
@@ -356,7 +358,7 @@ export default function LegalHubPage({ onOpenBooking }) {
 
       {selectedGuide && (
         <div className="modal-backdrop" onClick={() => setSelectedGuide(null)}>
-          <div className="modal-panel" onClick={(e) => e.stopPropagation()}>
+          <div ref={dialogRef} role="dialog" aria-modal="true" aria-label="Legal guide" tabIndex={-1} className="modal-panel" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
               <div>
                 <span className="modal-kicker">
@@ -366,7 +368,7 @@ export default function LegalHubPage({ onOpenBooking }) {
               </div>
               <button
                 type="button"
-                className="modal-close"
+                className="modal-close" aria-label="Close guide"
                 onClick={() => setSelectedGuide(null)}
               >
                 <X size={20} />

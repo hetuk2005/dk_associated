@@ -153,3 +153,9 @@
     flex: 1;
   }
 }
+
+/* Card width, rather than viewport width, determines whether actions fit. */
+.adv-card-footer { flex-wrap: wrap; }
+.adv-card-actions { flex: 1 1 210px; flex-wrap: wrap; }
+.adv-card-actions .btn { flex: 1 1 90px; }
+.adv-name-row { align-items: flex-start; }

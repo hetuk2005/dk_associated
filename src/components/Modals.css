@@ -340,3 +340,15 @@
     grid-template-columns: 1fr;
   }
 }
+
+.modal-header > div { min-width: 0; }
+.modal-header > div > div { min-width: 0; }
+.modal-close { flex-shrink: 0; min-width: 40px; min-height: 40px; }
+.stepper-item { min-width: 0; }
+.stepper-item span { flex-shrink: 0; }
+.checkbox-row input { flex-shrink: 0; }
+@media (max-width: 380px) {
+  .modal-header, .modal-body { padding: 16px 12px; }
+  .stepper { gap: 6px; }
+  .stepper-item { font-size: 0.75rem; gap: 5px; }
+}

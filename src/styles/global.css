@@ -8,12 +8,10 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-x: hidden;
 }
 
 body {
   margin: 0;
-  overflow-x: hidden;
   font-family: var(--font-sans);
   color: var(--color-navy-900);
   background-color: var(--color-ivory-50);
@@ -336,4 +334,30 @@ textarea {
     white-space: normal;
     text-align: center;
   }
+}
+
+/* Let content shrink inside grids and flex rows rather than clip the page. */
+#root, main, .container { min-width: 0; }
+:where(.grid-2, .grid-3, .grid-4, .hero-grid, .transparency-grid,
+  .hub-layout, .tracker-layout, .footer-grid, .filter-toolbar) > * { min-width: 0; }
+:where(h1, h2, h3, h4, p, .badge, .mono, .modal-panel) { overflow-wrap: anywhere; }
+img, video { max-width: 100%; height: auto; }
+.form-group, .form-control { min-width: 0; }
+.btn { max-width: 100%; white-space: normal; text-align: center; }
+.btn svg, .badge svg { flex-shrink: 0; }
+a:focus-visible, button:focus-visible, select:focus-visible {
+  outline: 3px solid var(--color-brass-600); outline-offset: 3px;
+}
+.skip-link { position: fixed; top: 8px; left: 16px; z-index: 2000;
+  padding: 10px 16px; background: white; color: var(--color-navy-900);
+  transform: translateY(-150%); }
+.skip-link:focus { transform: translateY(0); }
+.modal-panel { max-height: calc(100dvh - 40px); overscroll-behavior: contain; }
+@media (max-width: 768px) {
+  .modal-panel { max-height: calc(100dvh - 20px); }
+  .form-control { font-size: 1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; animation: none !important; }
 }

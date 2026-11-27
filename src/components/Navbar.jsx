@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 import { Scale, PhoneCall, Globe, Menu, X, CalendarCheck, Lock } from 'lucide-react';
 import './Navbar.css';
@@ -10,6 +10,17 @@ export default function Navbar({ onOpenBooking }) {
   const [selectedLang, setSelectedLang] = useState('English');
 
   const closeMenu = () => setMobileOpen(false);
+  useEffect(() => {
+    const closeOnEscape = (event) => { if (event.key === 'Escape') setMobileOpen(false); };
+    const desktop = window.matchMedia('(min-width: 1181px)');
+    const closeOnDesktop = () => { if (desktop.matches) setMobileOpen(false); };
+    document.addEventListener('keydown', closeOnEscape);
+    desktop.addEventListener('change', closeOnDesktop);
+    return () => {
+      document.removeEventListener('keydown', closeOnEscape);
+      desktop.removeEventListener('change', closeOnDesktop);
+    };
+  }, []);
 
   return (
     <header className="site-header">
@@ -64,7 +75,7 @@ export default function Navbar({ onOpenBooking }) {
             </div>
           </Link>
 
-          <div className={`nav-links ${mobileOpen ? 'open' : ''}`}>
+          <div id="primary-navigation" className={`nav-links ${mobileOpen ? 'open' : ''}`}>
             <NavLink to="/" end onClick={closeMenu}>
               Home
             </NavLink>
@@ -110,6 +121,7 @@ export default function Navbar({ onOpenBooking }) {
               className="mobile-toggle"
               aria-label={mobileOpen ? 'Close navigation menu' : 'Open navigation menu'}
               aria-expanded={mobileOpen}
+              aria-controls="primary-navigation"
               onClick={() => setMobileOpen((prev) => !prev)}
             >
               {mobileOpen ? <X size={21} /> : <Menu size={21} />}

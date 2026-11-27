@@ -153,7 +153,7 @@ export default function AdvocatesPage({ onOpenBooking, onSelectAdvocate }) {
               Showing <strong>{advocates.length}</strong> verified advocate
               {advocates.length === 1 ? '' : 's'}
             </span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+            <div className="sort-control">
               <label htmlFor="sort-adv" style={{ fontSize: '0.84rem', fontWeight: 600 }}>
                 Sort by:
               </label>

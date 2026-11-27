@@ -495,3 +495,7 @@
     grid-template-columns: 1fr;
   }
 }
+
+.practice-meta, .pkg-dark-top, .pkg-dark-footer, .qa-meta,
+.tracker-preview-head, .tracker-preview-foot, .triage-foot { flex-wrap: wrap; gap: 10px; }
+.pillar-num, .pm-item > svg, .pm-dot { flex-shrink: 0; }

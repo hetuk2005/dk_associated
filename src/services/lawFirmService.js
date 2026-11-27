@@ -14,7 +14,9 @@ function loadDb() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
-      return JSON.parse(raw);
+      const parsed = JSON.parse(raw);
+      if (['practiceAreas', 'advocates', 'packages', 'questions', 'guides', 'cases', 'consultations']
+        .every((key) => Array.isArray(parsed?.[key]))) return parsed;
     }
   } catch {
     // Fallback to initial seeded state if storage is unavailable
@@ -61,6 +63,8 @@ export async function fetchAdvocates(filters = {}) {
     params.set('practiceArea', filters.practiceArea);
   if (filters.court && filters.court !== 'All') params.set('court', filters.court);
   if (filters.search) params.set('search', filters.search);
+  if (filters.language && filters.language !== 'All') params.set('language', filters.language);
+  if (filters.sortBy) params.set('sortBy', filters.sortBy);
 
   const query = params.toString() ? `?${params.toString()}` : '';
 
@@ -125,7 +129,7 @@ export async function fetchLegalPackages(category = 'All') {
 }
 
 export async function fetchQuestions(category = 'All') {
-  return request('/questions', { method: 'GET' }, () => {
+  return request(`/questions${category !== 'All' ? `?category=${encodeURIComponent(category)}` : ''}`, { method: 'GET' }, () => {
     const db = loadDb();
     const list =
       category && category !== 'All'
@@ -168,7 +172,7 @@ export async function submitQuestion(payload) {
 }
 
 export async function fetchLegalGuides(search = '') {
-  return request('/guides', { method: 'GET' }, () => {
+  return request(`/guides${search.trim() ? `?search=${encodeURIComponent(search.trim())}` : ''}`, { method: 'GET' }, () => {
     const db = loadDb();
     const q = search.trim().toLowerCase();
     const list = q
