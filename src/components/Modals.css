@@ -240,9 +240,19 @@
 }
 
 /* Advocate Profile Modal */
+.adv-photo-frame-lg {
+  width: 66px;
+  height: 76px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 2px solid rgba(176, 124, 36, 0.5);
+  flex-shrink: 0;
+  background: var(--color-navy-900);
+}
+
 .adv-avatar-lg {
-  width: 54px;
-  height: 54px;
+  width: 66px;
+  height: 76px;
   border-radius: var(--radius-md);
   background: var(--color-navy-900);
   color: var(--color-brass-500);

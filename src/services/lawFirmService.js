@@ -8,7 +8,7 @@ import {
   INITIAL_QUESTIONS,
 } from '../data/mockDatabase';
 
-const STORAGE_KEY = 'dk_associated_mock_db_v1';
+const STORAGE_KEY = 'dk_associated_mock_db_v2';
 
 function loadDb() {
   try {

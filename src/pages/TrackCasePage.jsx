@@ -19,13 +19,13 @@ import './Pages.css';
 
 const PRACTICE_OPTIONS = [
   'Cheque Bounce & Recovery',
-  'Property & Real Estate',
+  'Property, Revenue & RERA',
   'Family & Matrimonial Law',
   'Criminal Defence & Bail',
-  'Corporate & Startup Counsel',
-  'Intellectual Property (IPR)',
-  'Labour & Employment',
-  'Consumer & Appellate Writs',
+  'Corporate & Commercial Counsel',
+  'High Court Writs & Consumer',
+  'Service, Labour & Employment',
+  'Intellectual Property & Documentation',
 ];
 
 export default function TrackCasePage() {
@@ -38,7 +38,7 @@ export default function TrackCasePage() {
   const [caseForm, setCaseForm] = useState({
     clientName: '',
     phone: '',
-    city: 'New Delhi',
+    city: 'Lucknow',
     practiceArea: PRACTICE_OPTIONS[0],
     court: '',
     urgency: 'Standard (Within 48 hrs)',
@@ -319,7 +319,7 @@ export default function TrackCasePage() {
                       value={caseForm.city}
                       onChange={(e) => setCaseForm((p) => ({ ...p, city: e.target.value }))}
                     >
-                      {['New Delhi', 'Mumbai', 'Bengaluru', 'Ahmedabad', 'Chandigarh', 'Chennai'].map(
+                      {['Lucknow', 'High Court Lucknow', 'Collectorate Lucknow', 'Civil Court Lucknow', 'Pan-India'].map(
                         (c) => (
                           <option key={c} value={c}>
                             {c}

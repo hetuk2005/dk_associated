@@ -19,6 +19,10 @@ import {
   MessageSquareText,
   BookOpen,
   Quote,
+  PhoneCall,
+  MapPin,
+  Clock,
+  ChevronDown,
 } from 'lucide-react';
 import {
   fetchAdvocates,
@@ -27,6 +31,7 @@ import {
   fetchPracticeAreas,
   fetchQuestions,
 } from '../services/lawFirmService';
+import { FIRM_CONTACT } from '../data/mockDatabase';
 import AdvocateCard from '../components/AdvocateCard';
 import './HomePage.css';
 
@@ -41,6 +46,25 @@ const ICON_MAP = {
   Landmark,
 };
 
+const FAQS = [
+  {
+    q: 'Where are DK Associated chambers located in Lucknow?',
+    a: 'We operate across three prime court locations in Lucknow: (1) Chamber F-325, High Court, Lucknow; (2) Collectorate Compound, Lucknow Bar Association, Lucknow; and (3) Civil Court, Near Lockup, Central Bar Association, Lucknow.',
+  },
+  {
+    q: 'How can I urgently reach Adv. Deepak Kumar Singh for bail or urgent court matters?',
+    a: 'For urgent bail, FIR quashing, remand defense, or Advocate Commissioner enquiries, call +91 70522 22205 (Adv. Deepak Kumar Singh) or +91 88583 28256, or book an immediate slot via our consultation modal.',
+  },
+  {
+    q: 'Do you handle High Court Lucknow writ petitions and Collectorate revenue cases?',
+    a: 'Yes. Our Senior Counsel team handles Article 226/227 Writ Petitions, Criminal Quashing (Sec. 528 BNSS), Service & RERA matters at High Court Lucknow, and Revenue/Mutation/Title disputes at Collectorate Compound.',
+  },
+  {
+    q: 'Can outstation or NRI clients consult without visiting Lucknow first?',
+    a: 'Yes. You can book a Video Tele-Consult or Direct Phone Call in Hindi or English, share documents securely, receive stage-wise fee terms, and track hearing milestones online using your Case Reference ID.',
+  },
+];
+
 export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
   const navigate = useNavigate();
   const [practiceAreas, setPracticeAreas] = useState([]);
@@ -48,9 +72,10 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
   const [packages, setPackages] = useState([]);
   const [questions, setQuestions] = useState([]);
   const [guides, setGuides] = useState([]);
+  const [openFaq, setOpenFaq] = useState(0);
 
   const [triagePractice, setTriagePractice] = useState('All');
-  const [triageCity, setTriageCity] = useState('All');
+  const [triageCourt, setTriageCourt] = useState('All');
   const [triageSearch, setTriageSearch] = useState('');
 
   useEffect(() => {
@@ -62,7 +87,7 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
       fetchLegalGuides(''),
     ]).then(([paRes, advRes, pkgRes, qRes, gRes]) => {
       setPracticeAreas(paRes.data || []);
-      setAdvocates((advRes.data || []).slice(0, 3));
+      setAdvocates(advRes.data || []);
       setPackages((pkgRes.data || []).slice(0, 3));
       setQuestions((qRes.data || []).slice(0, 3));
       setGuides((gRes.data || []).slice(0, 3));
@@ -73,7 +98,7 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
     e.preventDefault();
     const params = new URLSearchParams();
     if (triagePractice !== 'All') params.set('practiceArea', triagePractice);
-    if (triageCity !== 'All') params.set('city', triageCity);
+    if (triageCourt !== 'All') params.set('court', triageCourt);
     if (triageSearch.trim()) params.set('search', triageSearch.trim());
     navigate(`/advocates?${params.toString()}`);
   };
@@ -87,16 +112,16 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
             <div className="hero-content">
               <div className="hero-kicker">
                 <ShieldCheck size={15} />
-                <span>Supreme Court • 14 High Courts • Pan-India Digital Chambers</span>
+                <span>High Court Lucknow (F-325) • Central Bar • Lucknow Bar Association</span>
               </div>
               <h1 className="hero-title">
-                Authoritative Legal Counsel, <em>Accessible Anywhere.</em>
+                DK Associated — <em>Dedicated Counsel, Proven Courtroom Standing.</em>
               </h1>
               <p className="hero-subtitle">
-                DK Associated unites veteran litigation partners with modern legal-tech
-                transparency—consult verified advocates via Video, Phone, or In-Chamber, track
-                stage-wise milestones, and engage fixed-fee legal services with complete
-                confidentiality.
+                Led by <strong>Adv. Deepak Kumar Singh</strong> (Advocate Commissioner, Central Bar
+                Lucknow) and <strong>Adv. Dileep Singh</strong> (Vice President, Lucknow Bar
+                Association), our six-advocate chambers deliver decisive representation across High
+                Court Lucknow, Civil Court, Collectorate, and Family Courts.
               </p>
 
               <div className="hero-cta-row">
@@ -106,8 +131,12 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
                   onClick={() => onOpenBooking()}
                 >
                   <Video size={17} />
-                  Book Tele-Consultation
+                  Book Chamber / Video Consult
                 </button>
+                <a href="tel:+917052222205" className="btn btn-outline-light">
+                  <PhoneCall size={16} />
+                  Call +91 70522 22205
+                </a>
                 <Link to="/track-case" className="btn btn-outline-light">
                   <Lock size={16} />
                   Post Confidential Case
@@ -120,7 +149,7 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
                 <span className="eyebrow" style={{ marginBottom: 4 }}>
                   Quick Counsel Finder
                 </span>
-                <h3>Match with a Verified Specialist</h3>
+                <h3>Connect with DK Associated Counsel</h3>
               </div>
 
               <form onSubmit={handleTriageSubmit} className="triage-form">
@@ -141,28 +170,27 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">City / Court Jurisdiction</label>
+                  <label className="form-label">Court / Chamber Forum</label>
                   <select
                     className="form-control"
-                    value={triageCity}
-                    onChange={(e) => setTriageCity(e.target.value)}
+                    value={triageCourt}
+                    onChange={(e) => setTriageCourt(e.target.value)}
                   >
-                    <option value="All">Pan-India (All Chambers)</option>
-                    <option value="New Delhi">New Delhi (Supreme Court / DHC)</option>
-                    <option value="Mumbai">Mumbai (Bombay HC / NCLT)</option>
-                    <option value="Bengaluru">Bengaluru (Karnataka HC / RERA)</option>
-                    <option value="Ahmedabad">Ahmedabad (Gujarat HC)</option>
-                    <option value="Chandigarh">Chandigarh (P&H High Court)</option>
-                    <option value="Chennai">Chennai (Madras High Court)</option>
+                    <option value="All">All Lucknow & Pan-India Forums</option>
+                    <option value="High Court">High Court, Lucknow Bench (F-325)</option>
+                    <option value="Collectorate">Collectorate Compound (Lucknow Bar)</option>
+                    <option value="Civil Court">Civil Court Near Lockup (Central Bar)</option>
+                    <option value="Family Court">Family Court, Lucknow</option>
+                    <option value="Consumer">Consumer Commission / UP RERA</option>
                   </select>
                 </div>
 
                 <div className="form-group">
-                  <label className="form-label">Keyword (Optional)</label>
+                  <label className="form-label">Keyword or Advocate Name (Optional)</label>
                   <input
                     type="text"
                     className="form-control"
-                    placeholder="e.g., Bail, Sec 138, Mutual Divorce, RERA..."
+                    placeholder="e.g., Bail, Sec 138, Mutation, Deepak Singh..."
                     value={triageSearch}
                     onChange={(e) => setTriageSearch(e.target.value)}
                   />
@@ -170,12 +198,12 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
 
                 <button type="submit" className="btn btn-primary" style={{ width: '100%' }}>
                   <Search size={16} />
-                  Find Specialist Advocates
+                  Find Chambers Advocate
                 </button>
               </form>
 
               <div className="triage-foot">
-                <span>Need urgent advice?</span>
+                <span>Direct Desk: +91 88583 28256</span>
                 <Link to="/legal-hub">Ask a Free Question →</Link>
               </div>
             </div>
@@ -183,21 +211,101 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
 
           <div className="hero-stats-bar">
             <div className="stat-item">
-              <strong>19+ Yrs</strong>
-              <span>Chambers Litigation Legacy</span>
+              <strong>6 Advocates</strong>
+              <span>High Court & Bar Leadership</span>
+            </div>
+            <div className="stat-item">
+              <strong>3 Chambers</strong>
+              <span>High Court F-325, Collectorate & Civil Court</span>
             </div>
             <div className="stat-item">
               <strong>5,900+</strong>
-              <span>Cases & Notices Handled</span>
+              <span>Matters, Writs & Commissions Handled</span>
             </div>
             <div className="stat-item">
               <strong>100%</strong>
-              <span>Stage-Wise Fee Transparency</span>
+              <span>Stage-Wise Transparent Legal Fees</span>
             </div>
-            <div className="stat-item">
-              <strong>6 Languages</strong>
-              <span>English, Hindi & Vernacular Desk</span>
+          </div>
+        </div>
+      </section>
+
+      {/* OUR TEAM & LEADERSHIP — ALL 6 ADVOCATES */}
+      <section className="section">
+        <div className="container">
+          <div className="section-header">
+            <div>
+              <span className="eyebrow">Our Legal Team — DK Associated</span>
+              <h2 className="section-title">Leadership & Chambers Advocates</h2>
+              <p className="section-subtitle">
+                Experienced advocates practicing across Allahabad High Court (Lucknow Bench),
+                Central Bar Association, and Lucknow Bar Association.
+              </p>
             </div>
+            <Link to="/advocates" className="btn btn-outline">
+              Filter & Compare Advocates <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          <div className="grid-3">
+            {advocates.map((adv) => (
+              <AdvocateCard
+                key={adv._id}
+                advocate={adv}
+                onViewProfile={onSelectAdvocate}
+                onBook={(a) => onOpenBooking({ advocate: a })}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* LUCKNOW CHAMBERS & DIRECT HELPLINES */}
+      <section className="section section-muted">
+        <div className="container">
+          <div className="section-header">
+            <div>
+              <span className="eyebrow">Three Lucknow Court Locations</span>
+              <h2 className="section-title">Visit Our Chambers or Call Directly</h2>
+              <p className="section-subtitle">
+                Dedicated presence inside High Court Lucknow, Collectorate Compound, and Civil Court
+                Near Lockup for swift filing and client coordination.
+              </p>
+            </div>
+            <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
+              <a href="tel:+917052222205" className="btn btn-brass btn-sm">
+                <PhoneCall size={15} /> +91 70522 22205 (Deepak Singh)
+              </a>
+              <a href="tel:+918858328256" className="btn btn-primary btn-sm">
+                <PhoneCall size={15} /> +91 88583 28256
+              </a>
+            </div>
+          </div>
+
+          <div className="grid-3">
+            {FIRM_CONTACT.offices.map((office) => (
+              <div key={office._id} className="card chamber-card">
+                <div className="chamber-top">
+                  <span className="badge badge-brass">{office.badge}</span>
+                  <MapPin size={18} color="var(--color-brass-600)" />
+                </div>
+                <h3>{office.title}</h3>
+                <p className="chamber-address">{office.address}</p>
+                <p className="chamber-focus">{office.focus}</p>
+                <div className="chamber-foot">
+                  <span>
+                    <Clock size={13} /> {office.timings}
+                  </span>
+                  <button
+                    type="button"
+                    className="btn btn-outline btn-sm"
+                    onClick={() => onOpenBooking({ mode: 'Chamber Visit' })}
+                  >
+                    Book Visit
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -208,10 +316,10 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
           <div className="section-header">
             <div>
               <span className="eyebrow">Specialized Chambers</span>
-              <h2 className="section-title">Practice Areas Across Indian Courts</h2>
+              <h2 className="section-title">Practice Areas Across Courts & Tribunals</h2>
               <p className="section-subtitle">
-                Dedicated partner-led teams covering civil, criminal, family, real estate, and
-                venture advisory with statutory clarity.
+                Comprehensive representation across criminal bail, High Court writs, Collectorate
+                revenue matters, matrimonial settlements, and commercial recovery.
               </p>
             </div>
             <Link to="/services" className="btn btn-outline">
@@ -244,7 +352,7 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
         </div>
       </section>
 
-      {/* STAGE-WISE TRANSPARENCY & TELE-LAW MODEL */}
+      {/* STAGE-WISE TRANSPARENCY & LIVE CASE TRACKER */}
       <section className="section section-muted">
         <div className="container">
           <div className="transparency-grid">
@@ -254,9 +362,8 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
                 Stage-Wise Retainers & Live Milestone Tracking
               </h2>
               <p className="section-subtitle" style={{ marginBottom: 24 }}>
-                Inspired by modern legal transparency—never pay opaque lump sums upfront. Every
-                litigation or advisory mandate is structured into clear milestones you can track
-                online 24×7.
+                Every litigation or advisory mandate at DK Associated is structured into clear
+                milestones you can track online 24×7 with full transparency.
               </p>
 
               <div className="pillar-list">
@@ -265,8 +372,8 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
                   <div>
                     <h4>Confidential Intake & Conflict Check</h4>
                     <p>
-                      Share your brief anonymously or via tele-consultation. Receive a conflict-free
-                      partner assignment within hours.
+                      Share your brief anonymously, call +91 70522 22205 / +91 88583 28256, or visit
+                      any of our three Lucknow chambers.
                     </p>
                   </div>
                 </div>
@@ -275,7 +382,7 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
                   <div>
                     <h4>Stage-Wise Milestone Fee Proposal</h4>
                     <p>
-                      Pay in transparent stages—from Notice & Drafting to Filing and Final
+                      Clear stage-wise retainers from Notice & Drafting to Filing and Final
                       Arguments—backed by written engagement terms.
                     </p>
                   </div>
@@ -338,7 +445,7 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
                   <Layers size={18} />
                   <div>
                     <strong>Stage 3: Magistrate Complaint & Summons Issued</strong>
-                    <span>Next Hearing: Dec 09, 2026 • Ballard Pier Court</span>
+                    <span>Next Hearing: Dec 09, 2026 • Civil Court Lucknow</span>
                   </div>
                 </div>
                 <div className="pm-item pending">
@@ -351,39 +458,10 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
               </div>
 
               <div className="tracker-preview-foot">
-                <span>Assigned: Adv. Kavita Parekh</span>
+                <span>Assigned: Adv. Deepak Kumar Singh</span>
                 <Link to="/track-case?id=DK-2026-8412">Open Full Case View →</Link>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-
-      {/* FEATURED ADVOCATES */}
-      <section className="section">
-        <div className="container">
-          <div className="section-header">
-            <div>
-              <span className="eyebrow">Verified Chambers Leadership</span>
-              <h2 className="section-title">Senior Partners & Specialist Advocates</h2>
-              <p className="section-subtitle">
-                Every advocate at DK Associated is Bar Council verified with proven court appearances.
-              </p>
-            </div>
-            <Link to="/advocates" className="btn btn-outline">
-              View All Advocates <ArrowRight size={16} />
-            </Link>
-          </div>
-
-          <div className="grid-3">
-            {advocates.map((adv) => (
-              <AdvocateCard
-                key={adv._id}
-                advocate={adv}
-                onViewProfile={onSelectAdvocate}
-                onBook={(a) => onOpenBooking({ advocate: a })}
-              />
-            ))}
           </div>
         </div>
       </section>
@@ -496,47 +574,64 @@ export default function HomePage({ onOpenBooking, onSelectAdvocate }) {
         </div>
       </section>
 
-      {/* CLIENT TESTIMONIALS */}
+      {/* FAQ + CLIENT TESTIMONIALS */}
       <section className="section section-muted">
         <div className="container">
-          <div className="section-header">
+          <div className="faq-testimonials-grid">
+            <div>
+              <span className="eyebrow">Client Guidance</span>
+              <h2 className="section-title" style={{ fontSize: '2.1rem', marginBottom: 18 }}>
+                Frequently Asked Questions
+              </h2>
+              <div className="faq-list">
+                {FAQS.map((item, idx) => {
+                  const isOpen = openFaq === idx;
+                  return (
+                    <div key={item.q} className={`card faq-item ${isOpen ? 'open' : ''}`}>
+                      <button
+                        type="button"
+                        className="faq-trigger"
+                        aria-expanded={isOpen}
+                        onClick={() => setOpenFaq(isOpen ? -1 : idx)}
+                      >
+                        <span>{item.q}</span>
+                        <ChevronDown size={18} className="faq-chevron" />
+                      </button>
+                      {isOpen && <p className="faq-answer">{item.a}</p>}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+
             <div>
               <span className="eyebrow">Client Trust</span>
-              <h2 className="section-title">What Clients & Founders Say</h2>
-            </div>
-          </div>
-          <div className="grid-3">
-            <div className="card testimonial-card">
-              <Quote size={24} className="quote-icon" />
-              <p>
-                “Within 48 hours of our video consult, DK Associated dispatched a sharp Sec. 138 notice
-                and tracked the magistrate summons online. We recovered our full ₹14L invoice.”
-              </p>
-              <div className="testimonial-author">
-                <strong>Saurabh Jain</strong>
-                <span>Director, MedTech Supplies (Ahmedabad)</span>
-              </div>
-            </div>
-            <div className="card testimonial-card">
-              <Quote size={24} className="quote-icon" />
-              <p>
-                “The 30-year title due diligence flagged an undisclosed mortgage charge before we
-                paid the ₹25 lakh token amount. Saved our family from years of litigation.”
-              </p>
-              <div className="testimonial-author">
-                <strong>Priya & Rohit Kulkarni</strong>
-                <span>Homebuyers (Mumbai)</span>
-              </div>
-            </div>
-            <div className="card testimonial-card">
-              <Quote size={24} className="quote-icon" />
-              <p>
-                “Their stage-wise startup legal kit gave us clean IP assignment and vesting terms
-                that cleared institutional investor diligence in one go.”
-              </p>
-              <div className="testimonial-author">
-                <strong>Arjun Nair</strong>
-                <span>Co-Founder, FinLedger SaaS (Bengaluru)</span>
+              <h2 className="section-title" style={{ fontSize: '2.1rem', marginBottom: 18 }}>
+                Client & Business Voices
+              </h2>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+                <div className="card testimonial-card">
+                  <Quote size={22} className="quote-icon" />
+                  <p>
+                    “Within 48 hours of contacting Adv. Deepak Kumar Singh, DK Associated filed our
+                    petition at High Court Lucknow and tracked every hearing milestone cleanly.”
+                  </p>
+                  <div className="testimonial-author">
+                    <strong>Saurabh Mishra</strong>
+                    <span>Director, Awadh Infra Supplies (Lucknow)</span>
+                  </div>
+                </div>
+                <div className="card testimonial-card">
+                  <Quote size={22} className="quote-icon" />
+                  <p>
+                    “Their Collectorate Compound team verified our 30-year Khatauni & land title
+                    chain before registration and saved us from an undisclosed dispute.”
+                  </p>
+                  <div className="testimonial-author">
+                    <strong>Priya & Rohit Shukla</strong>
+                    <span>Homebuyers (Gomti Nagar, Lucknow)</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

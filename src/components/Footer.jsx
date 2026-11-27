@@ -17,9 +17,9 @@ export default function Footer({ onOpenBooking }) {
               </div>
             </div>
             <p className="footer-desc">
-              Combining Supreme Court & High Court litigation pedigree with transparent
-              stage-wise legal pricing, tele-consultation access, and real-time case
-              tracking across India.
+              DK Associated unites High Court Lucknow, Central Bar, and Lucknow Bar Association
+              litigation leadership with transparent stage-wise pricing, tele-consultation, and
+              live case milestone tracking.
             </p>
             <button
               type="button"
@@ -53,19 +53,26 @@ export default function Footer({ onOpenBooking }) {
           </div>
 
           <div>
-            <h4 className="footer-heading">Principal Chambers</h4>
+            <h4 className="footer-heading">Lucknow Chambers & Contacts</h4>
             <ul className="footer-contact">
               <li>
                 <MapPin size={15} />
-                <span>Chamber 412, Lawyers Chambers Block II, Tilak Marg, New Delhi 110001</span>
+                <span>Chamber F-325, High Court, Lucknow, Uttar Pradesh</span>
               </li>
               <li>
                 <MapPin size={15} />
-                <span>Nariman Bhavan, Suite 904, Nariman Point, Mumbai 400021</span>
+                <span>Collectorate Compound, Lucknow Bar Association, Lucknow</span>
+              </li>
+              <li>
+                <MapPin size={15} />
+                <span>Civil Court, Near Lockup, Central Bar Association, Lucknow</span>
               </li>
               <li>
                 <Phone size={15} />
-                <span>+91 11 4089 2210 / +91 22 6741 8890</span>
+                <span>
+                  <a href="tel:+917052222205">+91 70522 22205</a> (Deepak Singh) •{' '}
+                  <a href="tel:+918858328256">+91 88583 28256</a>
+                </span>
               </li>
               <li>
                 <Mail size={15} />

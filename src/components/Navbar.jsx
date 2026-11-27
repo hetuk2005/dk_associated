@@ -30,13 +30,14 @@ export default function Navbar({ onOpenBooking }) {
             <span className="utility-item">
               <PhoneCall size={13} />
               <span>
-                <span className="utility-desk-label">24×7 Chambers Desk: </span>
-                <strong>+91 11 4089 2210</strong>
+                <span className="utility-desk-label">Deepak Singh: </span>
+                <a href="tel:+917052222205"><strong>+91 70522 22205</strong></a>
+                <span className="utility-cities"> • <a href="tel:+918858328256">+91 88583 28256</a></span>
               </span>
             </span>
             <span className="utility-divider">|</span>
             <span className="utility-item utility-cities">
-              New Delhi • Mumbai • Bengaluru • Ahmedabad • Chennai
+              High Court F-325 • Collectorate • Civil Court, Lucknow
             </span>
           </div>
 

@@ -5,8 +5,8 @@ import { fetchAdvocates, fetchPracticeAreas } from '../services/lawFirmService';
 import AdvocateCard from '../components/AdvocateCard';
 import './Pages.css';
 
-const CITIES = ['All', 'New Delhi', 'Mumbai', 'Bengaluru', 'Ahmedabad', 'Chandigarh', 'Chennai'];
-const COURTS = ['All', 'Supreme Court', 'High Court', 'NCLT', 'RERA', 'Family Court', 'District'];
+const CITIES = ['All', 'Lucknow', 'New Delhi', 'Mumbai', 'Bengaluru'];
+const COURTS = ['All', 'High Court', 'Civil Court', 'Collectorate', 'Central Bar', 'Lucknow Bar', 'Family Court', 'Consumer'];
 
 export default function AdvocatesPage({ onOpenBooking, onSelectAdvocate }) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -90,7 +90,7 @@ export default function AdvocatesPage({ onOpenBooking, onSelectAdvocate }) {
                   type="text"
                   className="form-control"
                   style={{ paddingLeft: 34 }}
-                  placeholder="e.g., Bail, Supreme Court, Menon, RERA..."
+                  placeholder="e.g., Deepak Singh, Bail, High Court, Collectorate..."
                   value={filters.search}
                   onChange={(e) => updateFilter('search', e.target.value)}
                 />

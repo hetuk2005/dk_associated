@@ -18,15 +18,12 @@ export default function ServicesPage({ onOpenBooking }) {
 
   const categories = [
     'All',
-    ...Array.from(new Set(practiceAreas.map((p) => p.title))).filter((title) =>
-      [
-        'Cheque Bounce & Recovery',
-        'Property & Real Estate',
-        'Family & Matrimonial Law',
-        'Corporate & Startup Counsel',
-        'Intellectual Property (IPR)',
-      ].includes(title)
-    ),
+    'Cheque Bounce & Recovery',
+    'Property, Revenue & RERA',
+    'Criminal Defence & Bail',
+    'Family & Matrimonial Law',
+    'Corporate & Commercial Counsel',
+    'Intellectual Property & Documentation',
   ];
 
   return (

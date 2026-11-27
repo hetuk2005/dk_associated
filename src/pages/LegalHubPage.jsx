@@ -19,12 +19,12 @@ import './Pages.css';
 
 const QA_CATEGORIES = [
   'All',
-  'Cheque Bounce & Recovery',
-  'Family & Matrimonial Law',
-  'Property & Real Estate',
-  'Labour & Employment',
   'Criminal Defence & Bail',
-  'Corporate & Startup Counsel',
+  'Property, Revenue & RERA',
+  'Family & Matrimonial Law',
+  'Cheque Bounce & Recovery',
+  'Service, Labour & Employment',
+  'Corporate & Commercial Counsel',
 ];
 
 export default function LegalHubPage({ onOpenBooking }) {
@@ -41,8 +41,8 @@ export default function LegalHubPage({ onOpenBooking }) {
 
   const [qForm, setQForm] = useState({
     title: '',
-    category: 'Property & Real Estate',
-    city: 'New Delhi',
+    category: 'Property, Revenue & RERA',
+    city: 'Lucknow',
     name: '',
     anonymous: true,
   });

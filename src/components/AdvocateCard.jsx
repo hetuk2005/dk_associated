@@ -7,6 +7,7 @@ import {
   Languages,
   CalendarCheck,
   ArrowUpRight,
+  Phone,
 } from 'lucide-react';
 import './AdvocateCard.css';
 
@@ -14,19 +15,33 @@ export default function AdvocateCard({ advocate, onViewProfile, onBook }) {
   return (
     <article className="card card-hover adv-card">
       <div className="adv-card-top">
-        <div className="adv-avatar">{advocate.initials}</div>
+        {advocate.photo ? (
+          <div className="adv-photo-frame">
+            <img
+              src={advocate.photo}
+              alt={advocate.name}
+              className="adv-photo"
+              loading="lazy"
+            />
+          </div>
+        ) : (
+          <div className="adv-avatar">{advocate.initials}</div>
+        )}
+
         <div className="adv-card-identity">
           <div className="adv-name-row">
             <h3 className="adv-name">{advocate.name}</h3>
             {advocate.verified && (
-              <span className="adv-verified-icon" title="Bar Council Verified">
+              <span className="adv-verified-icon" title="Bar Association Verified">
                 <BadgeCheck size={16} />
               </span>
             )}
           </div>
           <p className="adv-designation">{advocate.designation}</p>
           <div className="adv-bar-row">
-            <span className="mono adv-bar-id">Bar ID: {advocate.barId}</span>
+            <span className="mono adv-bar-id">
+              {advocate.barAssociation || 'Lucknow Bar'}
+            </span>
             <span className="adv-rating">
               <Star size={13} fill="#c8963e" color="#c8963e" />
               {advocate.rating} ({advocate.reviewsCount})
@@ -56,6 +71,14 @@ export default function AdvocateCard({ advocate, onViewProfile, onBook }) {
           <Languages size={14} />
           <span>{advocate.languages.join(', ')}</span>
         </div>
+        {advocate.phone && (
+          <div>
+            <Phone size={14} />
+            <a href={`tel:${advocate.phone.replace(/\s+/g, '')}`} className="adv-phone-link">
+              {advocate.phone}
+            </a>
+          </div>
+        )}
       </div>
 
       <div className="adv-card-footer">

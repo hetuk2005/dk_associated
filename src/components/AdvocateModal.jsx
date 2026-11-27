@@ -21,7 +21,13 @@ export default function AdvocateModal({ advocate, onClose, onBook }) {
       <div ref={dialogRef} role="dialog" aria-modal="true" aria-label="Advocate profile" tabIndex={-1} className="modal-panel" onClick={(e) => e.stopPropagation()}>
         <div className="modal-header">
           <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
-            <div className="adv-avatar-lg">{advocate.initials}</div>
+            {advocate.photo ? (
+              <div className="adv-photo-frame-lg">
+                <img src={advocate.photo} alt={advocate.name} className="adv-photo" />
+              </div>
+            ) : (
+              <div className="adv-avatar-lg">{advocate.initials}</div>
+            )}
             <div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
                 <h2 className="modal-title" style={{ margin: 0 }}>
@@ -46,8 +52,8 @@ export default function AdvocateModal({ advocate, onClose, onBook }) {
         <div className="modal-body">
           <div className="adv-meta-grid">
             <div className="adv-meta-box">
-              <span>Bar Enrollment ID</span>
-              <strong className="mono">{advocate.barId}</strong>
+              <span>Bar Association</span>
+              <strong>{advocate.barAssociation || 'Lucknow Bar'}</strong>
             </div>
             <div className="adv-meta-box">
               <span>Practice Tenure</span>
@@ -61,8 +67,8 @@ export default function AdvocateModal({ advocate, onClose, onBook }) {
               </strong>
             </div>
             <div className="adv-meta-box">
-              <span>Consult Fee</span>
-              <strong>₹{advocate.consultationFee.toLocaleString('en-IN')}</strong>
+              <span>Direct Phone</span>
+              <strong>{advocate.phone || '+91 88583 28256'}</strong>
             </div>
           </div>
 
@@ -110,8 +116,11 @@ export default function AdvocateModal({ advocate, onClose, onBook }) {
 
           <div className="adv-detail-section">
             <h4>
-              <MapPin size={15} /> Primary Chamber & Consultation Modes
+              <MapPin size={15} /> Chamber Address & Consultation Modes
             </h4>
+            <p style={{ marginBottom: 8 }}>
+              {advocate.chamberAddress || `${advocate.city} Chambers`}
+            </p>
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
               <span className="badge badge-brass">{advocate.city} Chambers</span>
               {advocate.modes.map((mode) => (

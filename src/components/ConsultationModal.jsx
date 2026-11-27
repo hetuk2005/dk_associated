@@ -14,20 +14,20 @@ import { bookConsultation } from '../services/lawFirmService';
 import './Modals.css';
 
 const MODES = [
+  { id: 'Chamber Visit', label: 'In-Chamber Visit', icon: Building, sub: 'High Court F-325 / Civil Court' },
+  { id: 'Phone Call', label: 'Direct Phone Call', icon: Phone, sub: '+91 70522 22205 / 88583 28256' },
   { id: 'Video Call', label: 'Video Tele-Consult', icon: Video, sub: 'Encrypted HD Chamber Link' },
-  { id: 'Phone Call', label: 'Direct Phone Call', icon: Phone, sub: 'Callback within slot window' },
-  { id: 'Chamber Visit', label: 'In-Chamber Visit', icon: Building, sub: 'New Delhi / Mumbai / Blr' },
 ];
 
 const PRACTICE_OPTIONS = [
-  'Family & Matrimonial Law',
-  'Property & Real Estate',
   'Criminal Defence & Bail',
-  'Corporate & Startup Counsel',
+  'Property, Revenue & RERA',
+  'Family & Matrimonial Law',
   'Cheque Bounce & Recovery',
-  'Intellectual Property (IPR)',
-  'Labour & Employment',
-  'Consumer & Appellate Writs',
+  'Corporate & Commercial Counsel',
+  'High Court Writs & Consumer',
+  'Service, Labour & Employment',
+  'Intellectual Property & Documentation',
 ];
 
 const TIME_SLOTS = ['10:30 AM', '12:00 PM', '02:30 PM', '04:30 PM', '06:00 PM'];
@@ -44,10 +44,10 @@ export default function ConsultationModal({ isOpen, onClose, prefill = {} }) {
     advocateName: prefill.advocate?.name || 'Auto-Assign Specialist Partner',
     advocateId: prefill.advocate?._id || '',
     packageTitle: prefill.pkg?.title || '',
-    date: new Date(Date.now() + 86400000).toISOString().slice(0, 10),
+    date: new Date(Date.now() + 86400000).toLocaleDateString('en-CA'),
     timeSlot: prefill.advocate?.slots?.[0] || TIME_SLOTS[0],
-    city: prefill.advocate?.city || 'New Delhi',
-    language: 'English',
+    city: prefill.advocate?.city || 'Lucknow',
+    language: 'Hindi',
     clientName: '',
     phone: '',
     email: '',
@@ -204,7 +204,7 @@ export default function ConsultationModal({ isOpen, onClose, prefill = {} }) {
                     value={form.city}
                     onChange={(e) => updateField('city', e.target.value)}
                   >
-                    {['New Delhi', 'Mumbai', 'Bengaluru', 'Ahmedabad', 'Chandigarh', 'Chennai', 'Pan-India'].map(
+                    {['Lucknow (High Court F-325)', 'Lucknow (Collectorate)', 'Lucknow (Civil Court)', 'Pan-India Online'].map(
                       (c) => (
                         <option key={c} value={c}>
                           {c}
